@@ -116,16 +116,6 @@ export const deleteReceipt = mutation({
             throw new Error("Receipt not found");
         }
 
-        const identity = await ctx.auth.getUserIdentity();
-        if (!identity) {
-            throw new Error("Unauthorized");
-        }
-
-        const userId = identity.subject;
-        if (receipt.userId !== userId) {
-            throw new Error("Unauthorized, receipt does not belong to user");
-        }
-
         await ctx.storage.delete(receipt.fileId);
 
         await ctx.db.delete(args.id);
